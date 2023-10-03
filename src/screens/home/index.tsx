@@ -57,6 +57,10 @@ export default function Home() {
     const updatedCardData = [...cardData];
     updatedCardData.splice(index, 1);
     setCardData(updatedCardData);
+
+    // Recalculate the number of completed tasks
+    const concluidos = updatedCardData.filter((item) => item.isCheckChecked).length;
+    setCardsConcluidos(concluidos);
   
     // Atualiza o total de cards
     setTotalCards(updatedCardData.length);
@@ -128,7 +132,7 @@ export default function Home() {
       ) : (
 
         <FlatList
-          data={cardData}
+        data={cardData.sort((a, b) => (a.isCheckChecked === b.isCheckChecked ? 0 : a.isCheckChecked ? 1 : -1))}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <View style={styles.cardsContainer}>
